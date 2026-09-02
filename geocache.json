@@ -1,0 +1,626 @@
+{
+  "6197, rue Notre-Dame|Saguenay": {
+    "lat": 48.3075583,
+    "lng": -71.105686
+  },
+  "1577, rue des Roitelets|Saguenay": {
+    "lat": 48.4067986,
+    "lng": -71.0497875
+  },
+  "394, rue Courcelette|Saguenay": {
+    "lat": 48.446181,
+    "lng": -71.102189
+  },
+  "1601, rue Victor-Guimond|Saguenay": {
+    "lat": 48.4018002,
+    "lng": -71.0887757
+  },
+  "3865, rue du Roi-Georges|Saguenay": {
+    "lat": 48.4248939,
+    "lng": -71.2442151
+  },
+  "3251, rue des Pensées|Saguenay": {
+    "lat": 48.3509482,
+    "lng": -70.8845834
+  },
+  "1840, rue Pellan|Saguenay": {
+    "lat": 48.4311548,
+    "lng": -71.2650884
+  },
+  "1954, rue des Étudiants|Saguenay": {
+    "lat": 48.4271477,
+    "lng": -71.227924
+  },
+  "2565, rue Saint-Dominique|Saguenay": {
+    "lat": 48.407509,
+    "lng": -71.2582006
+  },
+  "4239, chemin de l'Église|Saguenay": {
+    "lat": 48.346135,
+    "lng": -71.0657425
+  },
+  "1435, rue Alexis-Simard|Saguenay": {
+    "lat": 48.3134347,
+    "lng": -70.8531274
+  },
+  "1802, avenue John-Kane|Saguenay": {
+    "lat": 48.32275,
+    "lng": -70.8844392
+  },
+  "33 Quill St.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "363 Lorry Greenberg Dr.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1701 Woodroffe Ave.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1500 Shea Rd.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1448 Meadow Drive, Osgoode|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "4101 Innovation Drive, Kanata|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "Hazeldean Road at Stittsville Main Street|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1665 Apeldoorn Avenue, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "265 Britannia Road, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "400 North River Road, Vanier|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "215 Owl Drive, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1161 Blohm Drive, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "3165 Uplands Drive, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "10 Warner Colpitts Lane, Goulbourn|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "265 Fairmont Avenue, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "349 Bruyère Street, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "100 Braemar Street, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1B Windsor Avenue, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2250 Torquay Avenue, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1145 Greenlawn Crescent, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "400 Goldridge Drive, Kanata|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "3302 Huntley Road, Goulbourn|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "998 Valin Street, Cumberland|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1270 Pebble Road, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "5660 Osgoode Main Street, Osgoode|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "3560 Wyman Place, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1279 Colonial Road, Cumberland|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "3580 Trapper's Road, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "11 Robert Kemp Street, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "3939 Albion Road, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1257 Joseph Drouin Avenue, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1841 Elmridge Drive, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2001 Gardenway Drive, Cumberland|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2300 Community Way, Rideau|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1556 Forest Valley Drive, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "3525 Cambrian Road, Nepean|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "7292 Parkway Road, Osgoode|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "3412 Richmond Road, Nepean|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2805 Carling Avenue, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2500 Campeau Drive, Kanata|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "50 Bellman Drive, Nepean|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "110 Mancini Way, Nepean|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1735 St. Bernard Street, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2777 Cassels Street, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "5572 Doctor Leach Drive, Rideau|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2263 Portobello Blvd.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1 Donald Street, Vanier |Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "61 Corkstown Road, Nepean|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1895 Russell Rd.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "504 Sir George-Étienne Cartier Parkway, Rockcliffe Park|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "176 Cameron Avenue, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "3320 Paul Anka Dr.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1064 Wellington St. W.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "250 Holland Ave.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "345 Richmond Rd.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "4101 Innovation Dr.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2500 Campeau Dr.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "3500 Cambrian Rd.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1000 Valin St.|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "65 Stonehaven Drive, Kanata|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "560 Parade Drive, Goulbourn|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "171 Escarpment Crescent, Kanata|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2810 Findlay Creek Drive / 4008 Kelly Farm Drive, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1829 Trim Road|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2960 Riverside Drive, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1819 Stonehenge Crescent, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "11 Combermere Lane, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "290 Meadowbreeze Drive, Kanata|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "39 Onslow Crescent, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "108 Juanita Avenue, West Carleton|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2890 Munster Road, Goulbourn|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "120 Ramsgrange Street|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "590 Rouncey Road|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2999 Sable Ridge Drive, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "262 Len Purcell Drive, West Carleton|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "4386 Spratt Road, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "855 A Lawnsberry Drive, Cumberland|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "539 Wavell Avenue, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1900 Dauphin Road, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "6600 Bilberry Drive, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1365 Halton Terrace, Kanata|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "5650 Scobie Crescent, Osgoode|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1410 Henri Lauzon Street, Gloucester|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "38 Chimo Drive, Kanata|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1590 Alta Vista Drive, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1404 Lexington Street, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2785 8th Line Road|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2597 Alta VIsta Drive, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "560 Summerhill Street|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "691 Hartman Crescent, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1115 Dunning Road, Cumberland|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "300 Den Haag Drive, Ottawa|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "1002 Beaverbrook Road, Kanata|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "250 Lorry Greenberg Drive|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "100 Highgarden Terrace|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "2185 Arch Street|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "886 Atrium Ridge|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "180 Sweetvalley Drive|Ottawa": {
+    "lat": null,
+    "lng": null
+  },
+  "Avenue Orchard, LaSalle, Montréal (Québec) H8R 0A2|Montréal": {
+    "lat": 45.4230744,
+    "lng": -73.6473696
+  },
+  "Parc Lefebvre, Montréal|Montréal": {
+    "lat": 45.4355238,
+    "lng": -73.6353011
+  },
+  "Avenues Hampton et Hingston, Montréal|Montréal": {
+    "lat": null,
+    "lng": null
+  },
+  "4551, boul. Sainte-Anne G1C 2H8 Beauport|Québec": {
+    "lat": 46.8610363,
+    "lng": -71.1702517
+  },
+  "1641, Avenue de Colmar Charlesbourg|Québec": {
+    "lat": 46.8761362,
+    "lng": -71.2698206
+  },
+  "200, rue Huot Sainte-Foy–Sillery–Cap-Rouge|Québec": {
+    "lat": 46.7661678,
+    "lng": -71.3786288
+  },
+  "1525, rue de l'Innovation La Haute-Saint-Charles|Québec": {
+    "lat": 46.8577196,
+    "lng": -71.420736
+  },
+  "333, rue Perroteau G1C 6N1 Beauport|Québec": {
+    "lat": 46.8894338,
+    "lng": -71.2002086
+  },
+  "720, avenue de Gironde Charlesbourg|Québec": {
+    "lat": 46.8730401,
+    "lng": -71.2665955
+  },
+  "1475, rue Virginia-Woolf Les Rivières|Québec": {
+    "lat": 46.8479984,
+    "lng": -71.3070511
+  },
+  "8815, avenue Jean-Paquin G1G 4W7 Charlesbourg|Québec": {
+    "lat": 46.8635944,
+    "lng": -71.2823354
+  },
+  "150, boul. des Étudiants G2A 2M4 La Haute-Saint-Charles|Québec": {
+    "lat": 46.8551606,
+    "lng": -71.362305
+  },
+  "4120, rue Michel-Hervé Sainte-Foy–Sillery–Cap-Rouge|Québec": {
+    "lat": 46.7506201,
+    "lng": -71.343918
+  },
+  "3224, rue Armand-Hamelin Sainte-Foy–Sillery–Cap-Rouge|Québec": {
+    "lat": 46.7556662,
+    "lng": -71.3093831
+  },
+  "6106, rue de l'Accueil G3E 1G9 La Haute-Saint-Charles|Québec": {
+    "lat": 46.8702072,
+    "lng": -71.335376
+  },
+  "2155, Boulevard Bastien G2B 1B8 Les Rivières|Québec": {
+    "lat": 46.8581335,
+    "lng": -71.3358913
+  },
+  "3535, rue de la Rivière-Nelson La Haute-Saint-Charles|Québec": {
+    "lat": 46.8659025,
+    "lng": -71.3875471
+  },
+  "705, rue Saint-Viateur Charlesbourg|Québec": {
+    "lat": 46.8791815,
+    "lng": -71.2418936
+  },
+  "160, rue du Cardinal-Maurice-Roy G1K 8B3 La Cité-Limoilou|Québec": {
+    "lat": 46.8188736,
+    "lng": -71.2322746
+  },
+  "222, avenue Ducharme G1M 2H3 Les Rivières|Québec": {
+    "lat": 46.812793,
+    "lng": -71.2646248
+  },
+  "26 rue Belmont, Gatineau|Gatineau": {
+    "lat": 45.3925863,
+    "lng": -75.8291719
+  },
+  "175 rue Front, Gatineau|Gatineau": {
+    "lat": 45.4054589,
+    "lng": -75.8557254
+  },
+  "250 Avenue du Bois-Franc, Gatineau|Gatineau": {
+    "lat": 45.4173198,
+    "lng": -75.8393705
+  },
+  "Promenades Crescent, Gatineau|Gatineau": {
+    "lat": null,
+    "lng": null
+  },
+  "40 rue Saint-Malo, Gatineau|Gatineau": {
+    "lat": 45.4208653,
+    "lng": -75.7948362
+  },
+  "Rue Woods et Glenholm, Gatineau|Gatineau": {
+    "lat": null,
+    "lng": null
+  },
+  "548 rue A. Guilbeault, Gatineau|Gatineau": {
+    "lat": null,
+    "lng": null
+  },
+  "110 Avenue de la Drave, Gatineau|Gatineau": {
+    "lat": 45.48563,
+    "lng": -75.6936037
+  },
+  "Rue Antoine, Gatineau|Gatineau": {
+    "lat": 45.49263,
+    "lng": -75.6691633
+  },
+  "500, rue de Cannes, Gatineau|Gatineau": {
+    "lat": 45.4933782,
+    "lng": -75.7387693
+  },
+  "160 rue des Fleurs, Gatineau|Gatineau": {
+    "lat": 45.5058797,
+    "lng": -75.6067956
+  },
+  "120 rue Charlevoix, Gatineau|Gatineau": {
+    "lat": 45.4316513,
+    "lng": -75.7160388
+  },
+  "479, boulevard des Hautes-Plaines, Gatineau|Gatineau": {
+    "lat": 45.4725318,
+    "lng": -75.7646194
+  },
+  "2, rue Fortier, Gatineau|Gatineau": {
+    "lat": 45.4364995,
+    "lng": -75.7369122
+  },
+  "40, rue du Bass, Gatineau|Gatineau": {
+    "lat": null,
+    "lng": null
+  },
+  "Saint-Hubert, Longueuil|Longueuil": {
+    "lat": 45.5042755,
+    "lng": -73.4216976
+  },
+  "Vieux-Longueuil, Longueuil|Longueuil": {
+    "lat": 45.5261928,
+    "lng": -73.4931481
+  },
+  "Greenfield Park, Longueuil|Longueuil": {
+    "lat": 45.4926624,
+    "lng": -73.4870499
+  },
+  "Lévis (secteur Saint-Jean-Chrysostôme)|Lévis": {
+    "lat": null,
+    "lng": null
+  },
+  "Lévis|Lévis": {
+    "lat": 46.7861708,
+    "lng": -71.1686324
+  },
+  "rue Letendre, Magog|Magog": {
+    "lat": 45.2899031,
+    "lng": -72.1178468
+  },
+  "260, rue Édouard Est, Magog|Magog": {
+    "lat": 45.2686597,
+    "lng": -72.1379655
+  },
+  "100, rue Saint-Alphonse Nord, Magog|Magog": {
+    "lat": 45.2645572,
+    "lng": -72.128992
+  },
+  "Au bout de la 114 e Rue, Saint-Georges|Saint-Georges": {
+    "lat": null,
+    "lng": null
+  },
+  "157 e Rue, Saint-Georges|Saint-Georges": {
+    "lat": 46.6278141,
+    "lng": -72.6537356
+  },
+  "Derrière l'École polyvalente C.-E.-Pouliot, Gaspé|Gaspé": {
+    "lat": null,
+    "lng": null
+  }
+}

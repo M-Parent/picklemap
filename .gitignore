@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Generated — committed intentionally for CI/CD caching
+# terrains.db   ← keep: served by GitHub Pages
+# geocache.json ← keep: avoids re-geocoding on every CI run
+
+# Debug / temp files
+*_debug.html
+*.tmp

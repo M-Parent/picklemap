@@ -1,0 +1,67 @@
+name: Build & Deploy Pickleball Québec
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 7 * * 1" # refresh automatique chaque lundi matin
+  workflow_dispatch: # déclenchement manuel possible
+
+permissions:
+  contents: write # needed to commit geocache back
+  pages: write
+  id-token: write
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── Checkout ──────────────────────────────────
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed to push back geocache
+
+      # ── Python ────────────────────────────────────
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      # ── Dependencies ──────────────────────────────
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright browser
+        run: playwright install chromium --with-deps
+
+      # ── Build DB ──────────────────────────────────
+      - name: Run scraper
+        run: python3 scraper.py
+
+      # ── Persist geocache (avoids re-geocoding) ────
+      - name: Commit updated geocache + DB
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add geocache.json terrains.db
+          git diff --staged --quiet || git commit -m "chore: rebuild db [skip ci]"
+          git push
+
+      # ── Assemble deploy folder ────────────────────
+      - name: Assemble static site
+        run: |
+          mkdir -p _site
+          cp index.html       _site/index.html
+          cp terrains.db      _site/terrains.db
+
+      # ── Deploy to GitHub Pages ────────────────────
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4

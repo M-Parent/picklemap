@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Pickleball Québec 🏓</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+    />
+    <style>
+      /* ─── Design tokens ─── */
+      :root {
+        --bg: #0f1115;
+        --panel: #13161d;
+        --card: #181c26;
+        --card-border: #252b38;
+        --accent: #ffb703;
+        --accent2: #3ddc97;
+        --indoor: #7c9eff;
+        --outdoor: #3ddc97;
+        --text: #e8e8ea;
+        --dim: #8a909e;
+        --radius: 12px;
+        --safe-top: env(safe-area-inset-top, 0px);
+        --safe-bot: env(safe-area-inset-bottom, 0px);
+      }
+
+      /* ─── Reset ─── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-family: inherit;
+      }
+
+      /* Sidebar hidden on mobile by default */
+      .sidebar {
+        display: none;
+      }
+
+      /* ─── App shell ─── */
+      .app {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        height: 100dvh; /* dynamic viewport height for mobile browsers */
+      }
+
+      /* ─── Top bar (mobile) ─── */
+      .topbar {
+        flex-shrink: 0;
+        background: var(--panel);
+        border-bottom: 1px solid var(--card-border);
+        padding: 12px 14px 8px;
+        padding-top: calc(12px + var(--safe-top));
+        z-index: 100;
+      }
+      .topbar h1 {
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+        color: var(--accent);
+        margin-bottom: 10px;
+      }
+      .topbar h1 span {
+        color: var(--text);
+        font-weight: 400;
+      }
+      .search-wrap {
+        position: relative;
+      }
+      .search-wrap input {
+        width: 100%;
+        padding: 11px 14px;
+        font-size: 0.95rem;
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius);
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      .search-wrap input:focus {
+        border-color: var(--accent);
+      }
+      .chips {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        padding: 8px 0 4px;
+        scrollbar-width: none;
+      }
+      .chips::-webkit-scrollbar {
+        display: none;
+      }
+      .chip {
+        flex-shrink: 0;
+        padding: 5px 11px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 500;
+        border: 1px solid var(--card-border);
+        background: var(--card);
+        color: var(--dim);
+        transition: all 0.15s;
+      }
+      .chip:hover,
+      .chip.active {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: rgba(255, 183, 3, 0.1);
+      }
+
+      /* ─── Main area ─── */
+      .main {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* ─── Map — top section on mobile ─── */
+      .panel-map {
+        position: relative;
+        height: 42vh;
+        flex-shrink: 0;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* ─── List — scrolls below map on mobile ─── */
+      .panel-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px 12px 12px;
+        background: var(--bg);
+      }
+
+      /* ─── Status ─── */
+      .status {
+        font-size: 0.8rem;
+        color: var(--dim);
+        padding: 4px 0 10px;
+      }
+
+      /* ─── Court card ─── */
+      .card {
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius);
+        padding: 14px 16px;
+        margin-bottom: 10px;
+        transition: border-color 0.15s;
+      }
+      .card:hover {
+        border-color: rgba(255, 183, 3, 0.35);
+      }
+      .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .card-name {
+        font-weight: 600;
+        font-size: 0.98rem;
+        line-height: 1.3;
+      }
+      .card-city {
+        color: var(--dim);
+        font-size: 0.78rem;
+        margin-top: 3px;
+      }
+      .badge {
+        flex-shrink: 0;
+        font-size: 0.68rem;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+      }
+      .badge.exterieur {
+        background: rgba(61, 220, 151, 0.15);
+        color: var(--outdoor);
+      }
+      .badge.interieur {
+        background: rgba(124, 158, 255, 0.15);
+        color: var(--indoor);
+      }
+      .card-meta {
+        margin-top: 10px;
+        font-size: 0.84rem;
+        color: var(--dim);
+        display: grid;
+        gap: 4px;
+      }
+      .card-meta b {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .card-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .btn {
+        flex: 1;
+        text-align: center;
+        padding: 9px 10px;
+        border-radius: 9px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: block;
+      }
+      .btn-nav {
+        background: var(--accent);
+        color: #16130a;
+      }
+      .btn-nav:hover {
+        opacity: 0.88;
+      }
+      .btn-src {
+        border: 1px solid var(--card-border);
+        color: var(--dim);
+        font-weight: 500;
+      }
+      .btn-src:hover {
+        border-color: var(--accent2);
+        color: var(--accent2);
+      }
+
+      /* ─── Empty / loading ─── */
+      .empty {
+        text-align: center;
+        color: var(--dim);
+        padding: 40px 20px;
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+
+      /* ─── GPS button (floating, on map) ─── */
+      .gps-btn {
+        position: absolute;
+        bottom: 28px;
+        right: 14px;
+        z-index: 900;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--panel);
+        border: 1.5px solid var(--card-border);
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        transition: border-color 0.15s;
+      }
+      .gps-btn:hover {
+        border-color: var(--accent2);
+      }
+
+      /* ─── Leaflet popup overrides ─── */
+      .leaflet-popup-content-wrapper {
+        background: var(--card) !important;
+        color: var(--text) !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+        border: 1px solid var(--card-border) !important;
+        padding: 0 !important;
+      }
+      .leaflet-popup-content {
+        margin: 0 !important;
+        min-width: 220px;
+      }
+      .leaflet-popup-tip {
+        background: var(--card) !important;
+      }
+      .leaflet-popup-close-button {
+        color: var(--dim) !important;
+        top: 8px !important;
+        right: 8px !important;
+      }
+      .popup-inner {
+        padding: 14px 16px;
+      }
+      .popup-name {
+        font-weight: 700;
+        font-size: 0.95rem;
+        line-height: 1.3;
+        margin-bottom: 4px;
+      }
+      .popup-city {
+        font-size: 0.78rem;
+        color: var(--dim);
+        margin-bottom: 8px;
+      }
+      .popup-row {
+        font-size: 0.82rem;
+        color: var(--dim);
+        margin-bottom: 3px;
+      }
+      .popup-row b {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .popup-actions {
+        display: flex;
+        gap: 7px;
+        margin-top: 12px;
+      }
+      .popup-btn {
+        flex: 1;
+        text-align: center;
+        padding: 8px;
+        border-radius: 8px;
+        font-size: 0.76rem;
+        font-weight: 600;
+        display: block;
+      }
+
+      /* ─── Desktop: side-by-side ─── */
+      @media (min-width: 768px) {
+        .app {
+          flex-direction: row;
+          overflow: hidden;
+        }
+        .topbar {
+          display: none;
+        }
+        .main {
+          flex: 1;
+          position: relative;
+        }
+
+        /* Desktop sidebar */
+        .sidebar {
+          display: flex;
+          flex-direction: column;
+          width: 380px;
+          min-width: 380px;
+          background: var(--panel);
+          border-right: 1px solid var(--card-border);
+          height: 100%;
+          overflow: hidden;
+        }
+        .sidebar-header {
+          flex-shrink: 0;
+          padding: 20px 16px 10px;
+          border-bottom: 1px solid var(--card-border);
+        }
+        .sidebar-header h1 {
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: var(--accent);
+          margin-bottom: 12px;
+        }
+        .sidebar-header h1 span {
+          color: var(--text);
+          font-weight: 400;
+        }
+        .sidebar-list {
+          flex: 1;
+          overflow-y: auto;
+          padding: 10px 14px 14px;
+        }
+        .panel-list {
+          display: none !important;
+        }
+        .panel-map {
+          position: absolute;
+          inset: 0;
+          height: auto !important;  /* override mobile 42vh */
+        }
+      }
+
+      /* ─── Scrollbar styling ─── */
+      .panel-list::-webkit-scrollbar,
+      .sidebar-list::-webkit-scrollbar { width: 4px; }
+      .panel-list::-webkit-scrollbar-track,
+      .sidebar-list::-webkit-scrollbar-track { background: transparent; }
+      .panel-list::-webkit-scrollbar-thumb,
+      .sidebar-list::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+      .sidebar-list::-webkit-scrollbar {
+        width: 4px;
+      }
+      .panel-list::-webkit-scrollbar-track,
+      .sidebar-list::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .panel-list::-webkit-scrollbar-thumb,
+      .sidebar-list::-webkit-scrollbar-thumb {
+        background: var(--card-border);
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══ MOBILE TOPBAR ═══ -->
+    <div class="app" id="app">
+      <div class="topbar">
+        <h1>🏓 Pickleball <span>Québec</span></h1>
+        <div class="search-wrap">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Cherche une ville, un parc…"
+            autocomplete="off"
+          />
+        </div>
+        <div class="chips" id="chips"></div>
+      </div>
+
+      <!-- ═══ DESKTOP SIDEBAR (hidden on mobile via CSS) ═══ -->
+      <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h1>🏓 Pickleball <span>Québec</span></h1>
+          <div class="search-wrap">
+            <input
+              type="text"
+              id="searchInputDesk"
+              placeholder="Cherche une ville, un parc…"
+              autocomplete="off"
+            />
+          </div>
+          <div class="chips" id="chipsDesk" style="padding-top: 8px"></div>
+        </div>
+        <div class="sidebar-list" id="sidebarList">
+          <div class="status" id="statusDesk">Chargement…</div>
+          <div id="resultsDesk"></div>
+        </div>
+      </div>
+
+      <!-- ═══ MAIN AREA ═══ -->
+      <div class="main" id="mainArea">
+        <!-- List scrolls below map on mobile -->
+        <div class="panel-map" id="panelMap">
+          <div id="map"></div>
+          <button class="gps-btn" id="gpsBtn" title="Ma position GPS">📍</button>
+        </div>
+        <div class="panel-list" id="panelList">
+          <div class="status" id="statusMob">Chargement…</div>
+          <div id="resultsMob"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script>
+      // ═══════════════════════════════════════════════════
+      // State
+      // ═══════════════════════════════════════════════════
+      let db = null;
+      let map = null;
+      let markers = [];
+      let gpsMarker = null;
+      let activeCity = null;
+      let currentRows = [];
+      const isDesktop = () => window.innerWidth >= 768;
+
+      // ═══════════════════════════════════════════════════
+      // DB helpers
+      // ═══════════════════════════════════════════════════
+      function qAll(sql, params = []) {
+        const stmt = db.prepare(sql);
+        stmt.bind(params);
+        const rows = [];
+        while (stmt.step()) rows.push(stmt.getAsObject());
+        stmt.free();
+        return rows;
+      }
+
+      // ═══════════════════════════════════════════════════
+      // Rendering helpers
+      // ═══════════════════════════════════════════════════
+      function directionsUrl(d) {
+        if (d.lat != null && d.lng != null)
+          return `https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}`;
+        if (d.adresse)
+          return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.adresse + ", " + d.ville + ", Québec")}`;
+        return null;
+      }
+
+      function cardHTML(d) {
+        const dir = directionsUrl(d);
+        return `
+  <div class="card" data-id="${d.id}">
+    <div class="card-top">
+      <div>
+        <div class="card-name">${d.nom}</div>
+        <div class="card-city">${d.ville}${d.region ? " · " + d.region : ""}</div>
+      </div>
+      <span class="badge ${d.type}">${d.type === "exterieur" ? "Extérieur" : "Intérieur"}</span>
+    </div>
+    <div class="card-meta">
+      ${d.adresse ? `<div><b>Adresse :</b> ${d.adresse}</div>` : ""}
+      ${d.nb_terrains ? `<div><b>Terrains :</b> ${d.nb_terrains}</div>` : ""}
+      <div><b>Tarif :</b> ${d.gratuit ? "✅ Gratuit" : "💰 Payant / voir source"}</div>
+      ${d.horaire ? `<div><b>Horaire :</b> ${d.horaire}</div>` : ""}
+    </div>
+    <div class="card-actions">
+      ${dir ? `<a class="btn btn-nav" href="${dir}" target="_blank">📍 Itinéraire</a>` : ""}
+      ${d.source ? `<a class="btn btn-src" href="${d.source}" target="_blank">Source officielle</a>` : ""}
+    </div>
+  </div>`;
+      }
+
+      function setStatus(el, text) {
+        el.textContent = text;
+      }
+
+      // ═══════════════════════════════════════════════════
+      // Map
+      // ═══════════════════════════════════════════════════
+      function initMap() {
+        map = L.map("map", { zoomControl: true }).setView([47.0, -72.5], 6);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19,
+        }).addTo(map);
+      }
+
+      function makeMarker(d) {
+        if (d.lat == null || d.lng == null) return null;
+        const color = d.type === "exterieur" ? "#3ddc97" : "#7c9eff";
+        const m = L.circleMarker([d.lat, d.lng], {
+          radius: 8,
+          fillColor: color,
+          color: "#0f1115",
+          weight: 2,
+          fillOpacity: 0.92,
+          className: "terrain-marker",
+        });
+
+        const dir = directionsUrl(d);
+        const popupHTML = `
+    <div class="popup-inner">
+      <div class="popup-name">${d.nom}</div>
+      <div class="popup-city">${d.ville}${d.region ? " · " + d.region : ""}</div>
+      ${d.adresse ? `<div class="popup-row"><b>Adresse :</b> ${d.adresse}</div>` : ""}
+      ${d.nb_terrains ? `<div class="popup-row"><b>Terrains :</b> ${d.nb_terrains}</div>` : ""}
+      <div class="popup-row"><b>Tarif :</b> ${d.gratuit ? "✅ Gratuit" : "💰 Payant"}</div>
+      ${d.horaire ? `<div class="popup-row"><b>Horaire :</b> ${d.horaire.slice(0, 80)}${d.horaire.length > 80 ? "…" : ""}</div>` : ""}
+      <div class="popup-actions">
+        ${dir ? `<a class="popup-btn btn-nav" href="${dir}" target="_blank">📍 Itinéraire</a>` : ""}
+        ${d.source ? `<a class="popup-btn btn-src" href="${d.source}" target="_blank">Source</a>` : ""}
+      </div>
+    </div>`;
+        m.bindPopup(popupHTML, { maxWidth: 280 });
+        return m;
+      }
+
+      function refreshMap(rows) {
+        if (!map) return;
+        markers.forEach((m) => map.removeLayer(m));
+        markers = [];
+
+        const bounds = [];
+        rows.forEach((d) => {
+          const m = makeMarker(d);
+          if (!m) return;
+          m.addTo(map);
+          markers.push(m);
+          bounds.push([d.lat, d.lng]);
+        });
+
+        if (bounds.length) {
+          if (activeCity) {
+            map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
+          } else if (!activeCity && bounds.length > 3) {
+            // Don't refit when showing everything unless first load
+          }
+        }
+      }
+
+      // ═══════════════════════════════════════════════════
+      // City chips
+      // ═══════════════════════════════════════════════════
+      function buildChips(villes, containerIds) {
+        const html = villes
+          .map((v) => `<button class="chip" data-city="${v}">${v}</button>`)
+          .join("");
+        containerIds.forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = html;
+        });
+        document.querySelectorAll(".chip").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const city = btn.dataset.city;
+            if (activeCity === city) {
+              activeCity = null;
+              document
+                .querySelectorAll(".chip")
+                .forEach((b) => b.classList.remove("active"));
+              document.getElementById("searchInput").value = "";
+              document.getElementById("searchInputDesk").value = "";
+              render("");
+            } else {
+              activeCity = city;
+              document
+                .querySelectorAll(".chip")
+                .forEach((b) => b.classList.remove("active"));
+              document
+                .querySelectorAll(`.chip[data-city="${city}"]`)
+                .forEach((b) => b.classList.add("active"));
+              document.getElementById("searchInput").value = city;
+              document.getElementById("searchInputDesk").value = city;
+              render(city, true); // true = should zoom map
+            }
+          });
+        });
+      }
+
+      // ═══════════════════════════════════════════════════
+      // Main render
+      // ═══════════════════════════════════════════════════
+      function render(query, fitMap = false) {
+        const q = query.trim();
+        let rows;
+        if (q) {
+          rows = qAll(
+            "SELECT * FROM terrains WHERE ville LIKE ? OR nom LIKE ? OR region LIKE ? ORDER BY ville, nom",
+            [`%${q}%`, `%${q}%`, `%${q}%`],
+          );
+        } else {
+          rows = qAll("SELECT * FROM terrains ORDER BY ville, nom");
+        }
+        currentRows = rows;
+
+        const count = rows.length;
+        const total = qAll("SELECT COUNT(*) AS n FROM terrains")[0].n;
+        const statusText = q
+          ? `${count} terrain(s) — ${q}`
+          : `${total} terrains · ${qAll("SELECT COUNT(DISTINCT ville) AS n FROM terrains")[0].n} villes`;
+
+        setStatus(document.getElementById("statusMob"), statusText);
+        setStatus(document.getElementById("statusDesk"), statusText);
+
+        const html = rows.length
+          ? rows.map(cardHTML).join("")
+          : `<div class="empty">Aucun terrain trouvé pour « ${q} ».</div>`;
+
+        document.getElementById("resultsMob").innerHTML = html;
+        document.getElementById("resultsDesk").innerHTML = html;
+
+        refreshMap(rows);
+
+        if (fitMap && map && rows.some((r) => r.lat)) {
+          const pts = rows.filter((r) => r.lat).map((r) => [r.lat, r.lng]);
+          if (pts.length)
+            map.fitBounds(pts, { padding: [50, 50], maxZoom: 13 });
+        }
+      }
+
+      // ═══════════════════════════════════════════════════
+      // GPS + search event wiring
+      // ═══════════════════════════════════════════════════
+      document.getElementById("gpsBtn").addEventListener("click", () => {
+        if (!navigator.geolocation) {
+          alert("Géolocalisation non disponible.");
+          return;
+        }
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const { latitude: lat, longitude: lng } = pos.coords;
+            if (gpsMarker) map.removeLayer(gpsMarker);
+            gpsMarker = L.circleMarker([lat, lng], {
+              radius: 11,
+              fillColor: "#4285f4",
+              color: "#fff",
+              weight: 2.5,
+              fillOpacity: 0.95,
+            })
+              .addTo(map)
+              .bindPopup("📍 Ma position")
+              .openPopup();
+            map.setView([lat, lng], 13);
+          },
+          (err) => alert("Géolocalisation impossible : " + err.message),
+        );
+      });
+
+      ["searchInput", "searchInputDesk"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", (e) => {
+          activeCity = null;
+          document
+            .querySelectorAll(".chip")
+            .forEach((b) => b.classList.remove("active"));
+          const other =
+            id === "searchInput" ? "searchInputDesk" : "searchInput";
+          document.getElementById(other).value = e.target.value;
+          render(e.target.value);
+        });
+      });
+
+      // ═══════════════════════════════════════════════════
+      // Init
+      // ═══════════════════════════════════════════════════
+      (async function init() {
+        // Load sql.js WASM
+        const SQL = await initSqlJs({
+          locateFile: (file) =>
+            `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${file}`,
+        });
+        const res = await fetch("terrains.db");
+        if (!res.ok)
+          throw new Error("terrains.db introuvable — relance le scraper.");
+        const buf = await res.arrayBuffer();
+        db = new SQL.Database(new Uint8Array(buf));
+
+        initMap();
+
+        const villes = qAll(
+          "SELECT DISTINCT ville FROM terrains ORDER BY ville",
+        ).map((r) => r.ville);
+        buildChips(villes, ["chips", "chipsDesk"]);
+        render("");
+
+        // Fit map to all terrains with coords on first load
+        const pts = qAll("SELECT lat, lng FROM terrains WHERE lat IS NOT NULL");
+        if (pts.length) {
+          map.fitBounds(
+            pts.map((r) => [r.lat, r.lng]),
+            { padding: [30, 30], maxZoom: 8 },
+          );
+        }
+      })().catch((err) => {
+        ["statusMob", "statusDesk"].forEach((id) => {
+          document.getElementById(id).textContent = "Erreur : " + err.message;
+        });
+        console.error(err);
+      });
+    </script>
+  </body>
+</html>
