@@ -40,6 +40,7 @@ picklemap/
 Collecte les données de toutes les villes, les géocode et reconstruit `terrains.db`.
 
 **Lancement :**
+
 ```bash
 pip install -r requirements.txt
 playwright install chromium   # uniquement pour Gatineau (page JS)
@@ -48,35 +49,35 @@ python3 scraper.py
 
 **Ce qu'il fait :**
 
-| Étape | Description |
-|-------|-------------|
-| Scraping | Appelle une fonction `scrape_<ville>()` par ville |
-| Gatineau | Playwright (page rendue côté client) |
-| Drummondville | API Overpass OpenStreetMap (contourne le robots.txt) |
-| Ottawa | API ArcGIS REST → géométrie Web Mercator convertie en WGS84 |
-| Autres villes | BeautifulSoup sur HTML statique |
-| Géocodage | Nominatim OSM avec cache fichier (`geocache.json`) |
-| Base de données | SQLite `terrains.db` avec colonnes lat/lng |
+| Étape           | Description                                                 |
+| --------------- | ----------------------------------------------------------- |
+| Scraping        | Appelle une fonction `scrape_<ville>()` par ville           |
+| Gatineau        | Playwright (page rendue côté client)                        |
+| Drummondville   | API Overpass OpenStreetMap (contourne le robots.txt)        |
+| Ottawa          | API ArcGIS REST → géométrie Web Mercator convertie en WGS84 |
+| Autres villes   | BeautifulSoup sur HTML statique                             |
+| Géocodage       | Nominatim OSM avec cache fichier (`geocache.json`)          |
+| Base de données | SQLite `terrains.db` avec colonnes lat/lng                  |
 
 **Ordre de scraping :** Saguenay → Gatineau → Ottawa → Drummondville → autres villes
 
 **Villes couvertes (176 terrains, 91 % géocodés) :**
 
-| Ville | Méthode | Terrains |
-|-------|---------|---------|
-| Saguenay | HTML statique (`article.fiche`) | 13 |
-| Gatineau | Playwright + `h2.__se__format__replace_h2` | 15 |
-| Ottawa | API ArcGIS REST (géométrie native) | 103 |
-| Drummondville | Overpass OSM (polygone → centroïde) | 1 |
-| Montréal | Données curées (robots.txt) | 3 |
-| Longueuil | HTML statique (`li` avec nb terrains) | 7 |
-| Lévis | HTML statique (section pickleball) | 3 |
-| Trois-Rivières | HTML statique (sections `h2` de parcs) | 5 |
-| Québec | HTML statique (`h2` → contenu) | 18 |
-| Magog | HTML statique + pages parcs individuelles | 3 |
-| Saint-Georges | Blocs Kadence (WordPress) | 2 |
-| Rimouski | HTML statique (`h4` sections) | 2 |
-| Gaspé | Données curées (onglets JS) | 1 |
+| Ville          | Méthode                                    | Terrains |
+| -------------- | ------------------------------------------ | -------- |
+| Saguenay       | HTML statique (`article.fiche`)            | 13       |
+| Gatineau       | Playwright + `h2.__se__format__replace_h2` | 15       |
+| Ottawa         | API ArcGIS REST (géométrie native)         | 103      |
+| Drummondville  | Overpass OSM (polygone → centroïde)        | 1        |
+| Montréal       | Données curées (robots.txt)                | 3        |
+| Longueuil      | HTML statique (`li` avec nb terrains)      | 7        |
+| Lévis          | HTML statique (section pickleball)         | 3        |
+| Trois-Rivières | HTML statique (sections `h2` de parcs)     | 5        |
+| Québec         | HTML statique (`h2` → contenu)             | 18       |
+| Magog          | HTML statique + pages parcs individuelles  | 3        |
+| Saint-Georges  | Blocs Kadence (WordPress)                  | 2        |
+| Rimouski       | HTML statique (`h4` sections)              | 2        |
+| Gaspé          | Données curées (onglets JS)                | 1        |
 
 ---
 
@@ -139,15 +140,15 @@ python3 -m http.server 8080
 
 ## Stack technique
 
-| Composant | Technologie |
-|-----------|-------------|
-| Scraping | Python 3 · requests · BeautifulSoup · Playwright |
-| Base de données | SQLite (généré côté serveur, lu côté client) |
-| Frontend | HTML/CSS/JS vanilla — zéro framework |
-| Carte | [Leaflet.js](https://leafletjs.com) + OpenStreetMap |
-| SQL dans le navigateur | [sql.js](https://sql.js.org) (SQLite compilé en WASM) |
-| Géocodage | [Nominatim](https://nominatim.org) (OSM) avec cache fichier |
-| CI/CD | GitHub Actions → GitHub Pages |
+| Composant              | Technologie                                                 |
+| ---------------------- | ----------------------------------------------------------- |
+| Scraping               | Python 3 · requests · BeautifulSoup · Playwright            |
+| Base de données        | SQLite (généré côté serveur, lu côté client)                |
+| Frontend               | HTML/CSS/JS vanilla — zéro framework                        |
+| Carte                  | [Leaflet.js](https://leafletjs.com) + OpenStreetMap         |
+| SQL dans le navigateur | [sql.js](https://sql.js.org) (SQLite compilé en WASM)       |
+| Géocodage              | [Nominatim](https://nominatim.org) (OSM) avec cache fichier |
+| CI/CD                  | GitHub Actions → GitHub Pages                               |
 
 ---
 
@@ -164,4 +165,3 @@ python3 -m http.server 8080
 
 Code source : MIT  
 Données terrains : issues de sources publiques municipales et d'OpenStreetMap (ODbL).
-

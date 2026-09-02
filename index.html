@@ -397,17 +397,24 @@
         .panel-map {
           position: absolute;
           inset: 0;
-          height: auto !important;  /* override mobile 42vh */
+          height: auto !important; /* override mobile 42vh */
         }
       }
 
       /* ─── Scrollbar styling ─── */
       .panel-list::-webkit-scrollbar,
-      .sidebar-list::-webkit-scrollbar { width: 4px; }
+      .sidebar-list::-webkit-scrollbar {
+        width: 4px;
+      }
       .panel-list::-webkit-scrollbar-track,
-      .sidebar-list::-webkit-scrollbar-track { background: transparent; }
+      .sidebar-list::-webkit-scrollbar-track {
+        background: transparent;
+      }
       .panel-list::-webkit-scrollbar-thumb,
-      .sidebar-list::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+      .sidebar-list::-webkit-scrollbar-thumb {
+        background: var(--card-border);
+        border-radius: 4px;
+      }
       .sidebar-list::-webkit-scrollbar {
         width: 4px;
       }
@@ -463,7 +470,9 @@
         <!-- List scrolls below map on mobile -->
         <div class="panel-map" id="panelMap">
           <div id="map"></div>
-          <button class="gps-btn" id="gpsBtn" title="Ma position GPS">📍</button>
+          <button class="gps-btn" id="gpsBtn" title="Ma position GPS">
+            📍
+          </button>
         </div>
         <div class="panel-list" id="panelList">
           <div class="status" id="statusMob">Chargement…</div>
