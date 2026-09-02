@@ -7,6 +7,7 @@
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <title>Pickleball Québec 🏓</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏓</text></svg>" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
@@ -121,11 +122,10 @@
         background: var(--card);
         border: 1px solid var(--card-border);
         color: var(--text);
-        font-size: 0.9rem;
-        line-height: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        font-size: 1rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
         transition:
           border-color 0.15s,
           color 0.15s;
@@ -173,10 +173,10 @@
         overflow: hidden;
       }
 
-      /* ─── Map — top section on mobile ─── */
+      /* Map top section on mobile — 32vh leaves room for ~2 cards below */
       .panel-map {
         position: relative;
-        height: 42vh;
+        height: 32vh;
         flex-shrink: 0;
       }
       #map {
@@ -208,6 +208,10 @@
         margin-bottom: 10px;
         transition: border-color 0.15s;
         cursor: pointer;
+      }
+      .card.highlighted {
+        border-color: var(--accent) !important;
+        box-shadow: 0 0 0 2px rgba(255, 183, 3, 0.25);
       }
       .card:hover {
         border-color: rgba(255, 183, 3, 0.35);
@@ -631,6 +635,8 @@
       </div>
     </div>`;
         m.bindPopup(popupHTML, { maxWidth: 280 });
+        // On popup open (from map click or card click) → highlight matching card
+        m.on("popupopen", () => scrollToCard(String(d.id)));
         return m;
       }
 
@@ -739,6 +745,14 @@
       }
 
       // ═══ Card click → focus map marker ═══
+      function scrollToCard(id) {
+        document.querySelectorAll(`.card[data-id="${id}"]`).forEach((card) => {
+          card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          card.classList.add("highlighted");
+          setTimeout(() => card.classList.remove("highlighted"), 1400);
+        });
+      }
+
       function handleCardClick(e) {
         if (e.target.closest("a")) return; // let link clicks pass through
         const card = e.target.closest(".card");
@@ -823,10 +837,16 @@
 
         initMap();
 
-        const villes = qAll(
-          "SELECT DISTINCT ville FROM terrains ORDER BY ville",
-        ).map((r) => r.ville);
-        buildChips(villes, ["chips", "chipsDesk"]);
+        const villes = qAll("SELECT DISTINCT ville FROM terrains").map(
+          (r) => r.ville,
+        );
+        // Priority cities first, then the rest sorted alphabetically
+        const PRIORITY = ["Saguenay", "Gatineau", "Ottawa", "Drummondville"];
+        const sorted = [
+          ...PRIORITY.filter((v) => villes.includes(v)),
+          ...villes.filter((v) => !PRIORITY.includes(v)).sort(),
+        ];
+        buildChips(sorted, ["chips", "chipsDesk"]);
         render("");
 
         // Fit map to all terrains with coords on first load
