@@ -126,7 +126,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: border-color 0.15s, color 0.15s;
+        transition:
+          border-color 0.15s,
+          color 0.15s;
       }
       .scroll-btn:hover {
         border-color: var(--accent);
@@ -472,7 +474,9 @@
           />
         </div>
         <div class="chips-wrap" id="chipsWrapMob">
-          <button class="scroll-btn" data-dir="-1" data-target="chips">‹</button>
+          <button class="scroll-btn" data-dir="-1" data-target="chips">
+            ‹
+          </button>
           <div class="chips" id="chips"></div>
           <button class="scroll-btn" data-dir="1" data-target="chips">›</button>
         </div>
@@ -491,9 +495,13 @@
             />
           </div>
           <div class="chips-wrap" id="chipsWrapDesk">
-            <button class="scroll-btn" data-dir="-1" data-target="chipsDesk">‹</button>
+            <button class="scroll-btn" data-dir="-1" data-target="chipsDesk">
+              ‹
+            </button>
             <div class="chips" id="chipsDesk"></div>
-            <button class="scroll-btn" data-dir="1" data-target="chipsDesk">›</button>
+            <button class="scroll-btn" data-dir="1" data-target="chipsDesk">
+              ›
+            </button>
           </div>
         </div>
         <div class="sidebar-list" id="sidebarList">
@@ -527,7 +535,7 @@
       let db = null;
       let map = null;
       let markers = [];
-      let markerById = {};  // terrain id → Leaflet marker, for card-click focus
+      let markerById = {}; // terrain id → Leaflet marker, for card-click focus
       let gpsMarker = null;
       let activeCity = null;
       let currentRows = [];
@@ -737,7 +745,9 @@
         if (!card) return;
         const m = markerById[card.dataset.id];
         if (!m) return;
-        map.setView(m.getLatLng(), Math.max(map.getZoom(), 14), { animate: true });
+        map.setView(m.getLatLng(), Math.max(map.getZoom(), 14), {
+          animate: true,
+        });
         m.openPopup();
       }
       ["resultsMob", "resultsDesk"].forEach((id) => {
@@ -748,7 +758,10 @@
       document.querySelectorAll(".scroll-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           const chips = document.getElementById(btn.dataset.target);
-          chips.scrollBy({ left: parseInt(btn.dataset.dir) * 180, behavior: "smooth" });
+          chips.scrollBy({
+            left: parseInt(btn.dataset.dir) * 180,
+            behavior: "smooth",
+          });
         });
       });
 
