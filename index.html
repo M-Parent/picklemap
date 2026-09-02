@@ -106,12 +106,40 @@
       .search-wrap input:focus {
         border-color: var(--accent);
       }
+      .chips-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin: 6px 0 2px;
+      }
+      .scroll-btn {
+        flex-shrink: 0;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        color: var(--text);
+        font-size: 0.9rem;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.15s, color 0.15s;
+      }
+      .scroll-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
       .chips {
         display: flex;
         gap: 6px;
         overflow-x: auto;
-        padding: 8px 0 4px;
+        padding: 4px 0;
         scrollbar-width: none;
+        flex: 1;
+        scroll-behavior: smooth;
       }
       .chips::-webkit-scrollbar {
         display: none;
@@ -177,6 +205,7 @@
         padding: 14px 16px;
         margin-bottom: 10px;
         transition: border-color 0.15s;
+        cursor: pointer;
       }
       .card:hover {
         border-color: rgba(255, 183, 3, 0.35);
@@ -442,7 +471,11 @@
             autocomplete="off"
           />
         </div>
-        <div class="chips" id="chips"></div>
+        <div class="chips-wrap" id="chipsWrapMob">
+          <button class="scroll-btn" data-dir="-1" data-target="chips">‹</button>
+          <div class="chips" id="chips"></div>
+          <button class="scroll-btn" data-dir="1" data-target="chips">›</button>
+        </div>
       </div>
 
       <!-- ═══ DESKTOP SIDEBAR (hidden on mobile via CSS) ═══ -->
@@ -457,7 +490,11 @@
               autocomplete="off"
             />
           </div>
-          <div class="chips" id="chipsDesk" style="padding-top: 8px"></div>
+          <div class="chips-wrap" id="chipsWrapDesk">
+            <button class="scroll-btn" data-dir="-1" data-target="chipsDesk">‹</button>
+            <div class="chips" id="chipsDesk"></div>
+            <button class="scroll-btn" data-dir="1" data-target="chipsDesk">›</button>
+          </div>
         </div>
         <div class="sidebar-list" id="sidebarList">
           <div class="status" id="statusDesk">Chargement…</div>
@@ -490,6 +527,7 @@
       let db = null;
       let map = null;
       let markers = [];
+      let markerById = {};  // terrain id → Leaflet marker, for card-click focus
       let gpsMarker = null;
       let activeCity = null;
       let currentRows = [];
@@ -592,6 +630,7 @@
         if (!map) return;
         markers.forEach((m) => map.removeLayer(m));
         markers = [];
+        markerById = {};
 
         const bounds = [];
         rows.forEach((d) => {
@@ -599,6 +638,7 @@
           if (!m) return;
           m.addTo(map);
           markers.push(m);
+          markerById[String(d.id)] = m;
           bounds.push([d.lat, d.lng]);
         });
 
@@ -689,6 +729,28 @@
             map.fitBounds(pts, { padding: [50, 50], maxZoom: 13 });
         }
       }
+
+      // ═══ Card click → focus map marker ═══
+      function handleCardClick(e) {
+        if (e.target.closest("a")) return; // let link clicks pass through
+        const card = e.target.closest(".card");
+        if (!card) return;
+        const m = markerById[card.dataset.id];
+        if (!m) return;
+        map.setView(m.getLatLng(), Math.max(map.getZoom(), 14), { animate: true });
+        m.openPopup();
+      }
+      ["resultsMob", "resultsDesk"].forEach((id) => {
+        document.getElementById(id).addEventListener("click", handleCardClick);
+      });
+
+      // ═══ Chip scroll arrows ═══
+      document.querySelectorAll(".scroll-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const chips = document.getElementById(btn.dataset.target);
+          chips.scrollBy({ left: parseInt(btn.dataset.dir) * 180, behavior: "smooth" });
+        });
+      });
 
       // ═══════════════════════════════════════════════════
       // GPS + search event wiring
