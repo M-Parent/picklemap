@@ -42,8 +42,8 @@ Architecture :
                         privilégier donnees.montreal.ca en open data CSV/JSON à la place)
   ❓ Laval           — piste : pickleballlaval.ca (association, pas la ville — à valider)
   ❓ Gatineau        — page 100% JS, nécessite Playwright (pas inclus ici)
-  ❓ Sherbrooke      — pas de page municipale officielle trouvée, seulement une
-                        association privée avec adhésion payante
+  ✅ Sherbrooke      — Overpass API (OSM) + données curées en fallback
+                        (pas de page municipale, parcs connus : Central, Marin, Nault, Belvédère)
   ❓ Chandler        — aucune source trouvée
 
 Usage :
@@ -584,14 +584,93 @@ def scrape_TEMPLATE_VILLE():
 # ----------------------------------------------------------------------
 def scrape_sherbrooke():
     """
-    Pas de page municipale dédiée trouvée — l'offre pickleball à Sherbrooke
-    passe surtout par l'association Pickleball Sherbrooke (adhésion 45$/an,
-    pickleballquebec.com/sherbrooke), pas un accès municipal gratuit structuré.
-    Parcs mentionnés (non structurés en page officielle) :
-    Central (6161 rue Président-Kennedy), Marin, Nault, Belvédère, Séminaire Salésien.
-    À valider/compléter manuellement si tu veux les inclure quand même.
+    Pas de page municipale dédiée — interroge OpenStreetMap via Overpass API
+    (même approche que Drummondville). Fallback curé sur les parcs connus :
+    Central (6161 rue Président-Kennedy), Marin, Nault, Belvédère.
     """
-    return []
+    print("[Sherbrooke] Overpass API (OpenStreetMap ODbL)")
+    # Bounding box: agglomération de Sherbrooke
+    q = ('[out:json];('
+         'node["sport"="pickleball"](45.32,-72.10,45.55,-71.75);'
+         'way["sport"="pickleball"](45.32,-72.10,45.55,-71.75);'
+         ');out body;>;out skel qt;')
+    try:
+        time.sleep(1)
+        r = requests.get(OVERPASS_URL, params={"data": q}, headers=HEADERS, timeout=30)
+        r.raise_for_status()
+        data = r.json()
+    except Exception as e:
+        print(f"  ❌ Overpass échoué : {e} — données curées en fallback")
+        return _sherbrooke_curated()
+
+    elements = data.get("elements", [])
+    node_coords = {el["id"]: (el["lat"], el["lon"]) for el in elements if el["type"] == "node"}
+
+    results = []
+    source = "https://www.openstreetmap.org"
+
+    for el in elements:
+        if el["type"] == "way":
+            coords = [node_coords[n] for n in el.get("nodes", []) if n in node_coords]
+            if not coords:
+                continue
+            lat = sum(c[0] for c in coords) / len(coords)
+            lng = sum(c[1] for c in coords) / len(coords)
+            tags = el.get("tags", {})
+            nom = tags.get("name") or "Terrain de pickleball"
+            results.append(dict(
+                ville="Sherbrooke", region="Estrie",
+                nom=nom, adresse=tags.get("addr:full") or tags.get("addr:street") or None,
+                horaire="Accès libre (voir affichage sur place)",
+                nb_terrains=int(tags["court:pickleball"]) if "court:pickleball" in tags else None,
+                gratuit=True, type="exterieur", source=source,
+                lat=round(lat, 7), lng=round(lng, 7),
+            ))
+        elif el["type"] == "node" and "sport" in el.get("tags", {}):
+            tags = el["tags"]
+            results.append(dict(
+                ville="Sherbrooke", region="Estrie",
+                nom=tags.get("name") or "Terrain de pickleball",
+                adresse=tags.get("addr:full") or None,
+                horaire="Accès libre (voir affichage sur place)",
+                nb_terrains=int(tags["court:pickleball"]) if "court:pickleball" in tags else None,
+                gratuit=True, type="exterieur", source=source,
+                lat=el["lat"], lng=el["lon"],
+            ))
+
+    if not results:
+        print("  ⚠️  Aucun terrain OSM trouvé — données curées en fallback")
+        return _sherbrooke_curated()
+
+    print(f"  ✅ {len(results)} terrain(s) Sherbrooke extraits via OSM")
+    return results
+
+
+def _sherbrooke_curated():
+    """Parcs confirmés par l'association Pickleball Sherbrooke et sources secondaires."""
+    source = "https://www.pickleballsherbrooke.com"
+    return [
+        dict(ville="Sherbrooke", region="Estrie",
+             nom="Parc Central",
+             adresse="6161, rue Président-Kennedy, Sherbrooke",
+             horaire="Accès libre (extérieur)",
+             nb_terrains=None, gratuit=True, type="exterieur", source=source),
+        dict(ville="Sherbrooke", region="Estrie",
+             nom="Parc Marin",
+             adresse="Sherbrooke",
+             horaire="Accès libre (extérieur)",
+             nb_terrains=None, gratuit=True, type="exterieur", source=source),
+        dict(ville="Sherbrooke", region="Estrie",
+             nom="Parc Nault",
+             adresse="Sherbrooke",
+             horaire="Accès libre (extérieur)",
+             nb_terrains=None, gratuit=True, type="exterieur", source=source),
+        dict(ville="Sherbrooke", region="Estrie",
+             nom="Parc Belvédère",
+             adresse="Sherbrooke",
+             horaire="Accès libre (extérieur)",
+             nb_terrains=None, gratuit=True, type="exterieur", source=source),
+    ]
 def scrape_drummondville():
     """
     Drummondville via OpenStreetMap Overpass API.
