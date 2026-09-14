@@ -622,5 +622,13 @@
   "Derrière l'École polyvalente C.-E.-Pouliot, Gaspé|Gaspé": {
     "lat": null,
     "lng": null
+  },
+  "6161, rue Président-Kennedy, Sherbrooke|Sherbrooke": {
+    "lat": 45.3534507,
+    "lng": -71.9941353
+  },
+  "Sherbrooke|Sherbrooke": {
+    "lat": 45.4016517,
+    "lng": -71.8953621
   }
 }
