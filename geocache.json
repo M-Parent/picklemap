@@ -630,5 +630,25 @@
   "Sherbrooke|Sherbrooke": {
     "lat": 45.4016517,
     "lng": -71.8953621
+  },
+  "393, rue Jeanne-Le Ber|Saguenay": {
+    "lat": 48.4238179,
+    "lng": -71.0273475
+  },
+  "401, rue du Stade|Saguenay": {
+    "lat": 48.4244919,
+    "lng": -71.092633
+  },
+  "2533, rue de la Charente|Saguenay": {
+    "lat": 48.3989219,
+    "lng": -71.2439943
+  },
+  "939, 5e Rue|Saguenay": {
+    "lat": 48.328828,
+    "lng": -70.8869823
+  },
+  "1373, rue Alexis-Simard|Saguenay": {
+    "lat": 48.313064,
+    "lng": -70.8537922
   }
 }
